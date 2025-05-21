@@ -1,0 +1,56 @@
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <cctype>
+
+using namespace std;
+
+// Morse code dictionary
+unordered_map<char, string> morseCode = {
+    {'A', ".-"}, {'B', "-..."}, {'C', "-.-."}, {'D', "-.."}, {'E', "."},
+    {'F', "..-."}, {'G', "--."}, {'H', "...."}, {'I', ".."}, {'J', ".---"},
+    {'K', "-.-"}, {'L', ".-.."}, {'M', "--"}, {'N', "-."}, {'O', "---"},
+    {'P', ".--."}, {'Q', "--.-"}, {'R', ".-."}, {'S', "..."}, {'T', "-"},
+    {'U', "..-"}, {'V', "...-"}, {'W', ".--"}, {'X', "-..-"}, {'Y', "-.--"},
+    {'Z', "--.."}, {' ', " "}
+};
+
+string charToMorse(char c) { 
+    c = toupper(c);
+    if (morseCode.find(c) != morseCode.end()) {
+        return morseCode[c];
+    }
+    return ""; // return empty string for unsupported characters
+}  
+
+int main() {
+    string message;
+    cout << "Enter a message in English (A-Z characters only): ";
+    getline(cin, message);
+    
+    string fullMorse;
+    
+    for (char c : message) {
+        if (c == ' ') {
+            cout << "[space]: [space]" << endl;
+            fullMorse += "   "; // three spaces for word separation
+            continue;
+        }
+        
+        char upperC = toupper(c);
+        string morse = charToMorse(upperC);
+        if (!morse.empty()) {
+            cout << upperC << ": " << morse << endl;
+            fullMorse += morse + "   "; // three spaces between letters
+        }
+    }
+    
+    // Remove the extra three spaces at the end
+    if (!fullMorse.empty()) {
+        fullMorse = fullMorse.substr(0, fullMorse.length() - 3);
+    }
+    
+    cout << "Full Morse Code Message: " << fullMorse << endl;
+    
+    return 0;
+}
